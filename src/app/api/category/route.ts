@@ -1,6 +1,7 @@
-import { connectDB } from "@/lib/connectDb";
-import FoodCategory from "@/models/FoodCategory";
+
+import FoodCategory from "@/lib/models/FoodCategory";
 import { NextResponse } from "next/server";
+import { connectDB } from "@/lib/connectDb";
 
 export const GET = async (request: Request) => {
   await connectDB();
@@ -44,7 +45,7 @@ export const DELETE = async (request: Request) => {
     console.error("DELETE /food-category error:", error);
     return NextResponse.json(
       { message: "Failed to delete category" },
-      { status: 500 }
+      { status: 200 }
     );
   }
 };
