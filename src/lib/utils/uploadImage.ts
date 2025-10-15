@@ -1,6 +1,5 @@
 import cloudinary from "../config/cloudinary";
 
-
 export const uploadImageToCloudinary = async (image: File): Promise<string> => {
   try {
     // Convert File to base64
