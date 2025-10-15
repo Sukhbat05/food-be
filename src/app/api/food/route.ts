@@ -1,5 +1,6 @@
 import { connectDB } from "@/lib/connectDb";
 import Food from "@/lib/models/Food";
+import FoodCategory from "@/lib/models/FoodCategory";
 import { NextResponse } from "next/server";
 
 export const POST = async (request: Request) => {
@@ -30,6 +31,7 @@ export const GET = async (request: Request) => {
     const food = await Food.find();
     return NextResponse.json({ message: "Success", data: food });
   } catch (error) {
+    FoodCategory;
     return NextResponse.json({ error: "Failed" });
   }
 };
