@@ -1,28 +1,44 @@
 import { connectDB } from "@/lib/connectDb";
 import Food from "@/lib/models/Food";
 import FoodCategory from "@/lib/models/FoodCategory";
+import { uploadImageToCloudinary } from "@/lib/utils/uploadImage";
 import { NextResponse } from "next/server";
 
 export const POST = async (request: Request) => {
-  try {
-    await connectDB();
+  console.log("ajil ehellleee");
 
-    const body = await request.json();
+  await connectDB();
 
-    console.log("body", body);
-    const food = await Food.create(body);
+  const formData = await request.formData();
+  const imageFile = formData.get("image");
+  console.log("IMAGE AVLAA", imageFile);
 
+  const imageUrl = await uploadImageToCloudinary(imageFile as File);
+  console.log("My zuragnii url", imageUrl);
+
+  const foodName = formData.get("foodName") as string;
+  const priceStr = formData.get("price") as string;
+  const price = Number(priceStr);
+  const ingredients = formData.get("ingredients") as string;
+  const category = formData.get("category") as string;
+
+  if (!foodName || !price || !ingredients || !category) {
     return NextResponse.json(
-      { message: "Success", data: food },
-      { status: 200 }
+      { message: "Бүх талбарыг бөглөнө үү" },
+      { status: 400 }
     );
-  } catch (error: any) {
-    return NextResponse.json({
-      message: "Error",
-      error: error.message,
-      status: 500,
-    });
   }
+
+  const body = {
+    foodName,
+    price,
+    ingredients,
+    category,
+    image: imageUrl,
+  };
+  const food = await Food.create(body);
+
+  return NextResponse.json({ message: "Success", data: food }, { status: 200 });
 };
 
 export const GET = async (request: Request) => {
