@@ -1,4 +1,3 @@
-
 import FoodCategory from "@/lib/models/FoodCategory";
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/connectDb";
@@ -31,13 +30,19 @@ export const DELETE = async (request: Request) => {
     const id = searchParams.get("id");
 
     if (!id) {
-      return NextResponse.json({ message: "Missing category id" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Missing category id" },
+        { status: 400 }
+      );
     }
 
     const deleted = await FoodCategory.findByIdAndDelete(id);
 
     if (!deleted) {
-      return NextResponse.json({ message: "Category not found" }, { status: 404 });
+      return NextResponse.json(
+        { message: "Category not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({ message: "Category deleted successfully" });
